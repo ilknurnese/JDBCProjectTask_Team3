@@ -56,6 +56,43 @@ public class DatabaseHelper {
         }
         DBConnectionClose();
         return dataList;
+
+
+
+    }
+
+
+    public static List<List<String>> getDataListWithHeaders(String sql) {
+
+        DBConnectionOpen();
+        List<List<String>> dataList = new ArrayList<>();
+        try {
+            ResultSet resultTable = statement.executeQuery(sql);
+            ResultSetMetaData metaData = resultTable.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Add column headers as the first row
+            List<String> headers = new ArrayList<>();
+            for (int i = 1; i <= columnCount; i++) {
+                headers.add(metaData.getColumnLabel(i));
+            }
+            dataList.add(headers);  // Adding headers as the first row
+
+            // Add rows of data
+            while (resultTable.next()) {
+                List<String> rowList = new ArrayList<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowList.add(resultTable.getString(i));
+                }
+                dataList.add(rowList);
+            }
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+        DBConnectionClose();
+        return dataList;
+
+
     }
 
 
