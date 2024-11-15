@@ -1,10 +1,9 @@
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseHelper {
@@ -34,6 +33,31 @@ public class DatabaseHelper {
             System.out.println("Error during disconnection: " + exception.getMessage());
         }
     }
+
+    public static List<List<String>> getDataList(String sql) {
+
+        DBConnectionOpen();
+
+        List<List<String>> dataList = new ArrayList<>();
+
+        try {
+            ResultSet resultTable = statement.executeQuery(sql);
+            ResultSetMetaData resultTableMetaData = resultTable.getMetaData();
+
+            while (resultTable.next()) {
+                List<String> rowList = new ArrayList<>();
+                for (int i = 1; i <= resultTableMetaData.getColumnCount(); i++) {
+                    rowList.add(resultTable.getString(i));
+                }
+                dataList.add(rowList);
+            }
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
+        DBConnectionClose();
+        return dataList;
+    }
+
 
 
 }

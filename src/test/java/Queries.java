@@ -1,8 +1,12 @@
 import org.testng.annotations.Test;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Queries extends DatabaseHelper{
+
 
 
     // Query 2: List all employees in 'Human Resources' department
@@ -69,7 +73,7 @@ public class Queries extends DatabaseHelper{
     // Query 27: Employees and managers in D005 department
     @Test
     public void executeQuery27() {
-        List<List<String>> data = getData("SELECT e.emp_no, e.first_name, e.last_name, e.birth_date, e.gender, e.hire_date, " +
+        List<List<String>> data = getDataList("SELECT e.emp_no, e.first_name, e.last_name, e.birth_date, e.gender, e.hire_date, " +
                 "d.dept_name AS department_name, t.title, s.salary " +
                 "FROM employees e " +
                 "JOIN dept_manager dm ON e.emp_no = dm.emp_no " +
@@ -85,7 +89,7 @@ public class Queries extends DatabaseHelper{
     // Query 32: Position history for employee with emp. no '10102'
     @Test
     public void executeQuery32() {
-        List<List<String>> data = getData("SELECT emp_no, title, from_date, to_date " +
+        List<List<String>> data = getDataList("SELECT emp_no, title, from_date, to_date " +
                 "FROM titles " +
                 "WHERE emp_no = '10102' " +
                 "ORDER BY from_date;");
@@ -97,7 +101,7 @@ public class Queries extends DatabaseHelper{
     // Query 37: Latest title information for each employee
     @Test
     public void executeQuery37() {
-        List<List<String>> data = getData("SELECT employees.emp_no, employees.first_name, employees.last_name, titles.title " +
+        List<List<String>> data = getDataList("SELECT employees.emp_no, employees.first_name, employees.last_name, titles.title " +
                 "FROM employees " +
                 "JOIN titles ON employees.emp_no = titles.emp_no " +
                 "WHERE titles.to_date = (SELECT MAX(to_date) FROM titles WHERE titles.emp_no = employees.emp_no);");
