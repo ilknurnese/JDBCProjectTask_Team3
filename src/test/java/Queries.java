@@ -65,6 +65,7 @@ public class Queries extends DatabaseHelper {
                 "INNER JOIN salaries s ON e.emp_no = s.emp_no " +
                 "GROUP BY department " +
                 "ORDER BY avg_salary DESC;";
+
         List<List<String>> data = getDataListWithHeaders(query);
 
         for (List<String> row : data) {
