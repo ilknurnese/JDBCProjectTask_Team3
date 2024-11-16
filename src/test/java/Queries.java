@@ -1,5 +1,8 @@
 import org.testng.annotations.Test;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Queries extends DatabaseHelper {
@@ -145,6 +148,74 @@ public class Queries extends DatabaseHelper {
         }
 
     }
+    @Test
+    //Task 3: Calculate the average salary of all employees
+    public void executeQuery3() {
+        String query = "select avg(salary) AS AverageSalary from salaries left join dept_emp ON dept_emp.emp_no=salaries.emp_no;";
+
+        List<List<String>> data = getDataListWithHeaders(query);
+
+        for (List<String> row : data) {
+            System.out.println(String.join("\t", row));
+
+        }
+
+    }
+
+    @Test
+    // Task 8: Calculate the average salary for each department (by department number or department name)-
+    public  void executeQuery8()
+    {
+        String query = "select avg(salary) AS AverageSalary,dept_emp.dept_no as DepartmentNo from salaries left join dept_emp ON dept_emp.emp_no=salaries.emp_no group by dept_no;";
+        List<List<String>> data = getDataListWithHeaders(query);
+
+        for (List<String> row : data) {
+            System.out.println(String.join("\t", row));
+
+        }
+    }
+
+    @Test
+    // Task 13: Find the latest salaries for each employee
+
+    public  void executeQuery13()
+    {
+        String query = "select emp_no,salary from salaries where to_date like '9999%' order by salary desc limit 100;";
+        List<List<String>> data = getDataListWithHeaders(query);
+
+        for (List<String> row : data) {
+            System.out.println(String.join("\t", row));
+
+        }
 
 
+}
+    @Test
+    // Task 18: List the names, last names, and hire dates in alphabetical order of all employees hired before
+    // January 01, 1990.
+
+    public  void executeQuery18()
+    {
+        String query = "select first_name as FirstName,last_name as LastName,hire_date as HireDate from employees where hire_date<'1990-01-01' limit 10;";
+        List<List<String>> data = getDataListWithHeaders(query);
+
+        for (List<String> row : data) {
+            System.out.println(String.join("\t", row));
+
+        }
+
+}
+
+//Task 23:List the number of employees in each department
+    @Test
+    public  void executeQuery23()
+    {
+        String query = "select count(emp_no) as ÇalışanSayısı,departments.dept_name as Departman from dept_emp left join departments ON departments.dept_no=dept_emp.dept_no group by dept_emp.dept_no limit 10;";
+        List<List<String>> data = getDataListWithHeaders(query);
+
+        for (List<String> row : data) {
+            System.out.println(String.join("\t", row));
+
+        }
+}
 }
